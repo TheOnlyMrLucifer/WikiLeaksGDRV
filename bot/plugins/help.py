@@ -1,25 +1,21 @@
-from bot.config import Messages as tr
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from bot import SUPPORT_CHAT_LINK
+from pyrogram import Client, filters
+from bot.config import Messages as tr
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-@Client.on_message(filters.private & filters.incoming & filters.command(['start']))
+@Client.on_message(filters.private & filters.incoming & filters.command(['start']), group=2)
 def _start(client, message):
     client.send_message(chat_id = message.chat.id,
-        text = tr.START_MSG.format(message.from_user.first_name),
-        parse_mode = "markdown",
-        disable_notification = True,
+        text = tr.START_MSG.format(message.from_user.mention),
         reply_to_message_id = message.message_id
     )
 
 
-@Client.on_message(filters.private & filters.incoming & filters.command(['help']))
+@Client.on_message(filters.private & filters.incoming & filters.command(['help']), group=2)
 def _help(client, message):
     client.send_message(chat_id = message.chat.id,
         text = tr.HELP_MSG[1],
-        parse_mode = "markdown",
-        disable_notification = True,
         reply_markup = InlineKeyboardMarkup(map(1)),
         reply_to_message_id = message.message_id
     )
@@ -45,8 +41,8 @@ def map(pos):
 
         button = [
             [
-             InlineKeyboardButton(text = 'Owner', url = SUPPORT_CHAT_LINK),
-             InlineKeyboardButton(text = 'WikiLeaks GateWay', url = "https://t.me/WikiLeaksGateWay")
+             InlineKeyboardButton(text = 'Support Chat', url = SUPPORT_CHAT_LINK),
+             InlineKeyboardButton(text = 'Feature Request', url = "https://github.com/TheOnlyMrLucifer/WikiLeaksGDRV/issues/new")
             ],
             [InlineKeyboardButton(text = '<--', callback_data = f"help+{pos-1}")]
 
